@@ -40,7 +40,8 @@ fun Sayfa() {
         //tumKisiler()
         //arama()
         //sil()
-        ekle()
+        //ekle()
+        guncelle()
     }
 }
 fun tumKisiler(){
@@ -97,7 +98,20 @@ fun ekle(){
         override fun onResponse(call: Call<CRUDCevap>, response: Response<CRUDCevap>) {
             val mesaj = response.body().message
             val basari = response.body().success
-            Log.e("Kişi sil", "Başarı : $basari - Mesaj: $mesaj")
+            Log.e("Kişi ekle", "Başarı : $basari - Mesaj: $mesaj")
+        }
+
+        override fun onFailure(call: Call<CRUDCevap>?, t: Throwable?) {}
+    })
+}
+fun guncelle(){
+    val kisilerDaoInterface = ApiUtils.getKisilerGetInterface()
+
+    kisilerDaoInterface.kisiGuncelle(2901, "Test ad x", "test tel y").enqueue(object : Callback<CRUDCevap>{
+        override fun onResponse(call: Call<CRUDCevap>, response: Response<CRUDCevap>) {
+            val mesaj = response.body().message
+            val basari = response.body().success
+            Log.e("Kişi Güncelle", "Başarı : $basari - Mesaj: $mesaj")
         }
 
         override fun onFailure(call: Call<CRUDCevap>?, t: Throwable?) {}
