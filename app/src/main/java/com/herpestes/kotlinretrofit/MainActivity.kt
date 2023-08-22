@@ -37,7 +37,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Sayfa() {
     LaunchedEffect(key1 = true){
-
+        //tumKisiler()
+        //arama()
+        //sil()
+        ekle()
     }
 }
 fun tumKisiler(){
@@ -55,6 +58,49 @@ fun tumKisiler(){
         }
 
         override fun onFailure(call: Call<KisilerCevap>?, t: Throwable?) {}
+    })
+}
+fun arama(){
+    val kisilerDaoInterface = ApiUtils.getKisilerGetInterface()
+
+    kisilerDaoInterface.kisiAra("r").enqueue(object: Callback<KisilerCevap>{
+        override fun onResponse(call: Call<KisilerCevap>, response: Response<KisilerCevap>) {
+            val liste = response.body().kisiler
+            for(k in liste){
+                Log.e("Kisi bilgi", "**************")
+                Log.e("Kisi id: ", k.kisi_id.toString())
+                Log.e("Kisi ad: ", k.kisi_ad)
+                Log.e("Kisi tel: ", k.kisi_tel)
+            }
+        }
+
+        override fun onFailure(call: Call<KisilerCevap>?, t: Throwable?) {}
+    })
+}
+fun sil(){
+    val kisilerDaoInterface = ApiUtils.getKisilerGetInterface()
+
+    kisilerDaoInterface.kisiSil(2892).enqueue(object : Callback<CRUDCevap>{
+        override fun onResponse(call: Call<CRUDCevap>, response: Response<CRUDCevap>) {
+            val mesaj = response.body().message
+            val basari = response.body().success
+            Log.e("Kişi sil", "Başarı : $basari - Mesaj: $mesaj")
+        }
+
+        override fun onFailure(call: Call<CRUDCevap>?, t: Throwable?) {}
+    })
+}
+fun ekle(){
+    val kisilerDaoInterface = ApiUtils.getKisilerGetInterface()
+
+    kisilerDaoInterface.kisiEkle("Test ad", "Test tel").enqueue(object : Callback<CRUDCevap>{
+        override fun onResponse(call: Call<CRUDCevap>, response: Response<CRUDCevap>) {
+            val mesaj = response.body().message
+            val basari = response.body().success
+            Log.e("Kişi sil", "Başarı : $basari - Mesaj: $mesaj")
+        }
+
+        override fun onFailure(call: Call<CRUDCevap>?, t: Throwable?) {}
     })
 }
 
